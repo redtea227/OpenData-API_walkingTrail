@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Hiking Trail Information">
+  <meta name="keywords" content="HTML,CSS,JavaScript">
+  <meta name="author" content="Roger">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>全台步道資訊網</title>
+  <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.10.25/datatables.min.css" />
+
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/js/bootstrap.bundle.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/datatables.min.js"></script>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WPLS0PVBKM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-WPLS0PVBKM');
+  </script>
+
+  <style>
+    h1>span{
+      margin-left: 60px;
+    }
+
+    .left {
+      width: 20%;
+      margin: 0 30px;
+    }
+
+    #img {
+      background: url("img/4577770.jpg") no-repeat;
+      background-size: contain;
+      height: 350px;
+    }
+
+    .right {
+      width: 80%;
+      margin: 0 30px;
+    }
+
+    /* #open {
+      display: none;
+    } */
+
+    #basic {
+      display: none;
+    }
+
+    #all {
+      display: none;
+    } 
+
+    #open tbody tr div {
+      height: 80px;
+      overflow: auto;
+    }
+
+    #basic tbody tr div {
+      height: 50px;
+      overflow: auto;
+    }
+
+    #all tbody tr div {
+      height: 80px;
+      overflow: auto;
+    }
+
+    th,td{
+      text-align: center;
+    }
+
+    footer {
+      position: relative;
+      left: 0;
+      bottom: -78px;
+      width: 100%;
+      color: white;
+    }
+
+    .rounded-circle{
+      width: 60px;
+      height: 60px;
+      line-height: 45px;
+    }
+  </style>
+</head>
+
+<body class="overflow-auto">
+  <h1 class="text-start w-100 text-success fw-bold mt-2"><span>步道哪裡走<img src="img/walking.png" style="width:40px;height:40px"></span>
+  </h1>
+  <div class="d-flex">
+    <section class="left text-center">
+      <div id="img"></div>
+      <a href="#" id="openButton" class="btn btn-success fs-3 w-100 mt-3">自然步道最新動態</a>
+      <a href="#" id="basicButton" class="btn btn-success fs-3 w-100 mt-3">全台自然步道資訊</a>
+      <a href="#" id="allButton" class="btn btn-success fs-3 w-100 mt-3">各地休閒步道</a>
+      <div class="cityButton mt-3">
+        <div class="key fs-3 my-3 mt-5">關鍵字搜尋區</div>
+      </div>
+    </section>
+    <section class="right">
+      <div id="open">
+        <h2 class="text-primary fw-bold text-center">自然步道最新動態<span style="float:right;color:blue;font-size:8px;" class="mt-3">資料即時更新</span></h2>
+        <table id="forestOpenTable" class="table table-striped table-warning table-sm table-hover dataTable">
+          <thead class="table-dark">
+            <th width="80px">發布日期</th>
+            <th width="100px">單位</th>
+            <th width="150px">步道名稱</th>
+            <th>內容</th>
+            <th width="100px">目前狀態</th>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div id="basic">
+        <h2 class="text-primary fw-bold text-center">全台自然步道資訊<span style="float:right;color:blue;font-size:8px;" class="mt-3">資料即時更新</span></h2>
+        <table id="forestBasicTable" class="table table-striped table-warning table-sm table-hover dataTable">
+          <thead class="table-dark">
+            <th width="100px">位置</th>
+            <th width="100px">步道名稱</th>
+            <th width="50px">海拔高度</th>
+            <th width="50px">總長</th>
+            <th width="120px">路面</th>
+            <th width="50px">最佳季節</th>
+            <th width="40px">時間</th>
+            <th width="60px">附註</th>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div id="all">
+        <h2 class="text-primary fw-bold text-center">各地休閒步道<span style="float:right;color:blue;font-size:8px;" class="mt-3">資料每日更新</span></h2>
+        <table id="walkTable" class="table table-striped table-warning table-sm table-hover dataTable">
+          <thead class="table-dark">
+            <th width="30px">位置</th>
+            <th width="40px">步道名稱</th>
+            <th width="200px">介紹</th>
+            <th width="15px">海拔高度</th>
+            <th width="15px">時間</th>
+            <th width="80px">交通方式</th>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+  <footer>
+    <div class="text-center bg-secondary text-white">以上資料取自政府資料開放平台</div>
+  </footer>
+  <script>
+    let cityName = ["基隆","台北","新北","桃園","新竹","苗栗","台中","南投","彰化","雲林","嘉義","台南","高雄","屏東","宜蘭","花蓮","台東","連江"]
+    for (let i = 0; i < cityName.length; i++) {
+      city = cityName[i];
+      // console.log(city)
+      $(".cityButton").append(`
+      <a href="#" class="btn btn-primary m-1 rounded-circle">${city}</a>
+      `)
+    }
+
+    $.when(
+      $.getJSON('apiForestBasic.php').done(function (re) {
+        forestBasic = re;
+      }),
+      $.getJSON('apiForestOpen.php').done(function (re) {
+        forestOpen = re;
+      }),
+      $.getJSON('apiWalk.php').done(function (re) {
+        walk = re.XML_Head.Infos.Info;
+      }))
+      .then(function () {
+        //最新動態
+        // console.log(walk)
+        for (let i = 0; i < forestOpen.length; i++) {
+          const row = forestOpen[i]
+          $("#forestOpenTable tbody").append(`
+        <tr>
+          <td>${row.ANN_DATE}</td>
+          <td>${row.DEP_NAME}</td>
+          <td>${row.TR_CNAME}</td>
+          <td><div>${row.Title}</div></td>
+          <td>${row.TR_TYP}</td>
+        </tr>
+        `);
+        };
+
+        //步道資訊
+        for (let i = 0; i < forestBasic.length; i++) {
+          const row = forestBasic[i]
+          $("#forestBasicTable tbody").append(`
+        <tr>
+          <td>${row.TR_ENTRANCE}</td>
+          <td>${row.TR_CNAME}</td>
+          <td>${row.TR_ALT}m</td>
+          <td><div>${row.TR_LENGTH}</div></td>
+          <td>${row.TR_PAVE}</td>
+          <td>${row.TR_BEST_SEASON}</td>
+          <td>${row.TR_TOUR}</td>
+          <td><div>${row.TR_SPECIAL}</div></td>
+        </tr>
+        `);
+        }
+
+        //休閒步道
+        for (let i = 0; i < walk.length; i++) {
+          const row = walk[i]
+          $("#walkTable tbody").append(`
+        <tr>
+          <td>${row.E_Place}</td>
+          <td>${row.Name}</td>
+          <td><div>${row.Toldescribe}</div></td>
+          <td>${row.Height}m</td>
+          <td>${row.Walkingtime}小時</td>
+          <td><div>${row.Travellinginfo}</div></td>
+        </tr>
+        `);
+        }
+
+        // datatable初始化
+        let tables = $('.dataTable').DataTable({
+          "order": [[0, "desc"]]
+        });
+
+        //搜尋關鍵字
+        $(".cityButton a").click(function () {
+          cityName = this.innerHTML;
+          tables.search(cityName).draw();
+        });
+
+        //button切換
+        $("#openButton").click(function () {
+          $("#open").show();
+          $("#basic").hide();
+          $("#all").hide();
+          tables.search('').draw();
+        })
+        $("#basicButton").click(function () {
+          $("#open").hide();
+          $("#basic").show();
+          $("#all").hide();
+          tables.search('').draw();
+        })
+        $("#allButton").click(function () {
+          $("#open").hide();
+          $("#basic").hide();
+          $("#all").show();
+          tables.search('').draw();
+        })
+      });
+  </script>
+</body>
+
+</html>
