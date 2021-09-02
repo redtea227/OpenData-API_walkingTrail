@@ -36,19 +36,23 @@
       overflow-x: hidden
     }
 
-    h1>span {
-      margin-left: 80px;
-    }
-
     #img {
       background: url("img/4577770.jpg") no-repeat;
       background-size: contain;
-      height: 350px;
+      height: 450px;
+    }
+
+    .information{
+      height: 50px;
     }
 
     .nav-link {
       background-color: #eeeeee !important;
       color: black !important;
+    }
+
+    .nav-item button:hover{
+      border: 5px solid green;
     }
 
     .nav-link.active {
@@ -70,7 +74,7 @@
     }
 
     tbody tr div {
-      height: 50px;
+      height: 60px;
       overflow: auto;
     }
 
@@ -95,20 +99,20 @@
 </head>
 
 <body>
-  <h1 class="text-start w-100 text-success fw-bold mt-2"><span>步道哪裡走<img src="img/walking.png"
-        style="width:40px;height:40px"></span>
-  </h1>
   <div class="row">
     <section class="col-3 text-center ps-4">
+      <h1 class="text-success fw-bold mt-2"><span>步道哪裡走<img src="img/walking.png"
+            style="width:40px;height:40px"></span>
+      </h1>
       <div id="img"></div>
-      <div class="cityButton mt-5">
-        <div class="key fs-3 my-3">關鍵字搜尋區</div>
+      <div class="cityButton mt-5 px-3">
+        <div class="key fs-3 my-3">各縣市快速搜尋</div>
       </div>
     </section>
-    <section class="col-9 pe-5">
+    <section class="col-9 pe-4">
       <!-- <h2 class="text-primary fw-bold text-center">自然步道最新動態<span style="float:right;color:blue;font-size:8px;"class="mt-3">資料即時更新</span></h2> -->
-      <div class="infomation">
-        <ul class="nav nav-pills mb-3 nav-justified">
+      <div class="information my-3">
+        <ul class="nav nav-pills nav-justified">
           <li class="nav-item">
             <button class="nav-link fs-5 active" id="openButton" data-bs-toggle="pill">自然步道最新動態</button>
           </li>
@@ -120,45 +124,47 @@
           </li>
         </ul>
       </div>
-      <div id="open">
-        <table id="forestOpenTable" class="table table-striped table-warning table-sm table-hover dataTable">
-          <thead class="table-dark">
-            <th width="80px">發布日期</th>
-            <th width="100px">單位</th>
-            <th width="150px">步道名稱</th>
-            <th>內容</th>
-            <th width="100px">目前狀態</th>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      <div id="basic">
-        <table id="forestBasicTable" class="table table-striped table-warning table-sm table-hover dataTable">
-          <thead class="table-dark">
-            <th width="100px">位置</th>
-            <th width="100px">步道名稱</th>
-            <th width="50px">海拔高度</th>
-            <th width="50px">總長</th>
-            <th width="120px">路面</th>
-            <th width="50px">最佳季節</th>
-            <th width="40px">時間</th>
-            <th width="60px">附註</th>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      <div id="all">
-        <table id="walkTable" class="table table-striped table-warning table-sm table-hover dataTable">
-          <thead class="table-dark">
-            <th width="30px">位置</th>
-            <th width="40px">步道名稱</th>
-            <th width="200px">介紹</th>
-            <th width="15px">海拔高度</th>
-            <th width="15px">時間</th>
-            <th width="80px">交通方式</th>
-          </thead>
-          <tbody></tbody>
-        </table>
+      <div class="tables">
+        <div id="open">
+          <table id="forestOpenTable" class="table table-striped table-warning table-sm table-hover dataTable">
+            <thead class="table-dark">
+              <th width="80px">發布日期</th>
+              <th width="100px">單位</th>
+              <th width="150px">步道名稱</th>
+              <th>內容</th>
+              <th width="100px">目前狀態</th>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div id="basic">
+          <table id="forestBasicTable" class="table table-striped table-warning table-sm table-hover dataTable">
+            <thead class="table-dark">
+              <th width="100px">位置</th>
+              <th width="100px">步道名稱</th>
+              <th width="50px">海拔高度</th>
+              <th width="50px">總長</th>
+              <th width="120px">路面</th>
+              <th width="50px">最佳季節</th>
+              <th width="40px">時間</th>
+              <th width="60px">附註</th>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div id="all">
+          <table id="walkTable" class="table table-striped table-warning table-sm table-hover dataTable">
+            <thead class="table-dark">
+              <th width="30px">位置</th>
+              <th width="40px">步道名稱</th>
+              <th width="200px">介紹</th>
+              <th width="15px">海拔高度</th>
+              <th width="15px">時間</th>
+              <th width="80px">交通方式</th>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </div>
     </section>
   </div>
@@ -192,11 +198,11 @@
           const row = forestOpen[i]
           $("#forestOpenTable tbody").append(`
         <tr>
-          <td>${row.ANN_DATE}</td>
-          <td>${row.DEP_NAME}</td>
-          <td>${row.TR_CNAME}</td>
+          <td><div>${row.ANN_DATE}</div></td>
+          <td><div>${row.DEP_NAME}</div></td>
+          <td><div>${row.TR_CNAME}</div></td>
           <td><div>${row.Title}</div></td>
-          <td>${row.TR_TYP}</td>
+          <td><div>${row.TR_TYP}</div></td>
         </tr>
         `);
         };
@@ -206,13 +212,13 @@
           const row = forestBasic[i]
           $("#forestBasicTable tbody").append(`
         <tr>
-          <td>${row.TR_ENTRANCE}</td>
-          <td>${row.TR_CNAME}</td>
-          <td>${row.TR_ALT}m</td>
+          <td><div>${row.TR_ENTRANCE}</div></td>
+          <td><div>${row.TR_CNAME}</div></td>
+          <td><div>${row.TR_ALT}m</div></td>
           <td><div>${row.TR_LENGTH}</div></td>
-          <td>${row.TR_PAVE}</td>
-          <td>${row.TR_BEST_SEASON}</td>
-          <td>${row.TR_TOUR}</td>
+          <td><div>${row.TR_PAVE}</div></td>
+          <td><div>${row.TR_BEST_SEASON}</div></td>
+          <td><div>${row.TR_TOUR}</div></td>
           <td><div>${row.TR_SPECIAL}</div></td>
         </tr>
         `);
@@ -223,11 +229,11 @@
           const row = walk[i]
           $("#walkTable tbody").append(`
         <tr>
-          <td>${row.E_Place}</td>
-          <td>${row.Name}</td>
+          <td><div>${row.E_Place}</div></td>
+          <td><div>${row.Name}</div></td>
           <td><div>${row.Toldescribe}</div></td>
-          <td>${row.Height}m</td>
-          <td>${row.Walkingtime}小時</td>
+          <td><div>${row.Height}m</div></td>
+          <td><div>${row.Walkingtime}小時</div></td>
           <td><div>${row.Travellinginfo}</div></td>
         </tr>
         `);
