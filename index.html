@@ -52,7 +52,7 @@
     }
 
     .nav-item button:hover{
-      border: 5px solid green;
+      border: 3px solid green;
     }
 
     .nav-link.active {
@@ -60,16 +60,7 @@
       color: white !important;
     }
 
-
-    /* #open {
-      display: none;
-    } */
-
-    #basic {
-      display: none;
-    }
-
-    #all {
+    .tableDiv{
       display: none;
     }
 
@@ -110,40 +101,39 @@
       </div>
     </section>
     <section class="col-9 pe-4">
-      <!-- <h2 class="text-primary fw-bold text-center">自然步道最新動態<span style="float:right;color:blue;font-size:8px;"class="mt-3">資料即時更新</span></h2> -->
       <div class="information my-3">
         <ul class="nav nav-pills nav-justified">
           <li class="nav-item">
-            <button class="nav-link fs-5 active" id="openButton" data-bs-toggle="pill">自然步道最新動態</button>
+            <button class="nav-link fs-5 active" id="openButton" data-bs-toggle="pill" data-target="tab1">自然步道最新動態</button>
           </li>
           <li class="nav-item mx-2">
-            <button class="nav-link fs-5" id="basicButton" data-bs-toggle="pill">全台自然步道資訊</button>
+            <button class="nav-link fs-5" id="basicButton" data-bs-toggle="pill" data-target="tab2">全台自然步道資訊</button>
           </li>
           <li class="nav-item">
-            <button class="nav-link fs-5" id="allButton" data-bs-toggle="pill">各地休閒步道</button>
+            <button class="nav-link fs-5" id="allButton" data-bs-toggle="pill" data-target="tab3">各地休閒步道</button>
           </li>
         </ul>
       </div>
-      <div class="tables">
-        <div id="open">
+      <div>
+        <div id="open" class="tableDiv"  data-name="tab1">
           <table id="forestOpenTable" class="table table-striped table-warning table-sm table-hover dataTable">
             <thead class="table-dark">
-              <th width="80px">發布日期</th>
-              <th width="100px">單位</th>
-              <th width="150px">步道名稱</th>
-              <th>內容</th>
-              <th width="100px">目前狀態</th>
+              <th width="">發布日期</th>
+              <th width="60px">單位</th>
+              <th width="60px">步道名稱</th>
+              <th width="250px">內容</th>
+              <th width="50px">目前狀態</th>
             </thead>
             <tbody></tbody>
           </table>
         </div>
-        <div id="basic">
+        <div id="basic" class="tableDiv"  data-name="tab2">
           <table id="forestBasicTable" class="table table-striped table-warning table-sm table-hover dataTable">
             <thead class="table-dark">
               <th width="100px">位置</th>
               <th width="100px">步道名稱</th>
-              <th width="50px">海拔高度</th>
               <th width="50px">總長</th>
+              <th width="50px">海拔高度</th>
               <th width="120px">路面</th>
               <th width="50px">最佳季節</th>
               <th width="40px">時間</th>
@@ -152,14 +142,14 @@
             <tbody></tbody>
           </table>
         </div>
-        <div id="all">
+        <div id="all" class="tableDiv"  data-name="tab3">
           <table id="walkTable" class="table table-striped table-warning table-sm table-hover dataTable">
             <thead class="table-dark">
               <th width="30px">位置</th>
               <th width="40px">步道名稱</th>
-              <th width="200px">介紹</th>
-              <th width="15px">海拔高度</th>
-              <th width="15px">時間</th>
+              <th width="250px">介紹</th>
+              <th width="10px">海拔高度</th>
+              <th width="10px">時間</th>
               <th width="80px">交通方式</th>
             </thead>
             <tbody></tbody>
@@ -172,6 +162,7 @@
     <div class="text-center bg-secondary text-white">以上資料取自政府資料開放平台</div>
   </footer>
   <script>
+    //快速搜尋區
     let cityName = ["基隆", "台北", "新北", "桃園", "新竹", "苗栗", "台中", "南投", "彰化", "雲林", "嘉義", "台南", "高雄", "屏東", "宜蘭", "花蓮", "台東", "連江"]
     for (let i = 0; i < cityName.length; i++) {
       city = cityName[i];
@@ -181,6 +172,7 @@
       `)
     }
 
+    //Load 3 api
     $.when(
       $.getJSON('apiForestBasic.php').done(function (re) {
         forestBasic = re;
@@ -214,8 +206,8 @@
         <tr>
           <td><div>${row.TR_ENTRANCE}</div></td>
           <td><div>${row.TR_CNAME}</div></td>
-          <td><div>${row.TR_ALT}m</div></td>
           <td><div>${row.TR_LENGTH}</div></td>
+          <td><div>${row.TR_ALT}m</div></td>
           <td><div>${row.TR_PAVE}</div></td>
           <td><div>${row.TR_BEST_SEASON}</div></td>
           <td><div>${row.TR_TOUR}</div></td>
@@ -250,25 +242,32 @@
           tables.search(cityName).draw();
         });
 
-        //button切換
-        $("#openButton").click(function () {
-          $("#open").show();
-          $("#basic").hide();
-          $("#all").hide();
+        //nav-button 頁籤切換
+        $("#open").show();
+        $('.nav-item button').click(function(){
+          $(".tableDiv").hide();
+          $('.tableDiv[data-name="'+$(this).attr('data-target')+'"]').show();
           tables.search('').draw();
         })
-        $("#basicButton").click(function () {
-          $("#open").hide();
-          $("#basic").show();
-          $("#all").hide();
-          tables.search('').draw();
-        })
-        $("#allButton").click(function () {
-          $("#open").hide();
-          $("#basic").hide();
-          $("#all").show();
-          tables.search('').draw();
-        })
+
+        // $("#openButton").click(function () {
+        //   $("#open").show();
+        //   $("#basic").hide();
+        //   $("#all").hide();
+        //   tables.search('').draw();
+        // })
+        // $("#basicButton").click(function () {
+        //   $("#open").hide();
+        //   $("#basic").show();
+        //   $("#all").hide();
+        //   tables.search('').draw();
+        // })
+        // $("#allButton").click(function () {
+        //   $("#open").hide();
+        //   $("#basic").hide();
+        //   $("#all").show();
+        //   tables.search('').draw();
+        // })
       });
   </script>
 </body>
