@@ -13,13 +13,25 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
     integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
     crossorigin="anonymous"></script>
+
+  <!-- datatable -->
   <link rel="stylesheet" type="text/css"
     href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" />
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.10.25/datatables.min.css" />
-
   <script type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/js/bootstrap.bundle.min.js"></script>
   <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/datatables.min.js"></script>
+  <!-- moment.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js"
+    integrity="sha512-bv7N4KB9o6up3AwlbrA0rATZTS8mLnOI4DdB7G/9rKugtRlHAfZA70hx4oINqjdoz8tQurQ55rs0MHPrXv1CIw=="
+    crossorigin="anonymous"></script>
+  <script>
+    moment.locale("zh-tw");
+  </script>
+  <!-- chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js"
+    integrity="sha512-asxKqQghC1oBShyhiBwA+YgotaSYKxGP1rcSYTDrB0U6DxwlJjU59B67U8+5/++uFjcuVM8Hh5cokLjZlhm3Vg=="
+    crossorigin="anonymous"></script>
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-WPLS0PVBKM"></script>
@@ -36,50 +48,65 @@
       overflow-x: hidden
     }
 
-    #img {
-      background: url("img/4577770.jpg") no-repeat;
+    #img1 {
+      background: url("img/hiking.jpg") no-repeat;
       background-size: contain;
-      height: 450px;
+      height: 400px;
+      cursor: pointer;
     }
 
-    .information{
+    #img2 {
+      background: url("img/weather.jpg") no-repeat;
+      background-size: contain;
+      height: 400px;
+      cursor: pointer;
+    }
+
+    .information {
       height: 50px;
     }
 
-    .nav-link {
+    #trailContent .nav-link {
       background-color: #eeeeee !important;
       color: black !important;
     }
 
-    .nav-item button:hover{
+    #trailContent .nav-item button:hover {
       border: 3px solid green;
     }
 
-    .nav-link.active {
+    #trailContent .nav-link.active {
       background-color: green !important;
       color: white !important;
     }
 
-    .tableDiv{
+    #weatherContent .nav-link {
+      background-color: #eeeeee !important;
+      color: black !important;
+    }
+
+    #weatherContent .nav-item button:hover {
+      border: 3px solid blue;
+    }
+
+    #weatherContent .nav-link.active {
+      background-color: blue !important;
+      color: white !important;
+    }
+
+    .tableDiv {
+      display: none;
+    }
+
+    #weatherContent {
       display: none;
     }
 
     tbody tr div {
-      height: 60px;
+      height: 100px;
       overflow: auto;
     }
 
-    th,
-    td {
-      text-align: center;
-    }
-
-    footer {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      color: white;
-    }
 
     .rounded-circle {
       width: 60px;
@@ -90,76 +117,119 @@
 </head>
 
 <body>
-  <div class="row">
-    <section class="col-3 text-center ps-4">
-      <h1 class="text-success fw-bold mt-2"><span>步道哪裡走<img src="img/walking.png"
-            style="width:40px;height:40px"></span>
+  <div class="row gx-0">
+    <section class="col-12 col-lg-3 text-center px-4">
+      <h1 class="text-success fw-bold mt-2"><span>步道哪裡走<img src="img/walking.png" style="width:40px;height:40px"></span>
       </h1>
-      <div id="img"></div>
-      <div class="cityButton mt-5 px-3">
-        <div class="key fs-3 my-3">各縣市快速搜尋</div>
+      <div class="d-flex d-lg-block">
+        <div id="img1" class="col-6 col-lg-12"></div>
+        <div id="img2" class="col-6 col-lg-12"></div>
+      </div>
+      <div class="cityButton mt-5 px-4">
+        <div class="key fs-3 my-3">關鍵字快速搜尋</div>
       </div>
     </section>
-    <section class="col-9 pe-4">
-      <div class="information my-3">
-        <ul class="nav nav-pills nav-justified">
-          <li class="nav-item">
-            <button class="nav-link fs-5 active" id="openButton" data-bs-toggle="pill" data-target="tab1">自然步道最新動態</button>
-          </li>
-          <li class="nav-item mx-2">
-            <button class="nav-link fs-5" id="basicButton" data-bs-toggle="pill" data-target="tab2">全台自然步道資訊</button>
-          </li>
-          <li class="nav-item">
-            <button class="nav-link fs-5" id="allButton" data-bs-toggle="pill" data-target="tab3">各地休閒步道</button>
-          </li>
-        </ul>
+    <section class="col-12 col-lg-9 px-4">
+      <div id="trailContent">
+        <div class="information my-3">
+          <ul class="nav nav-pills nav-justified">
+            <li class="nav-item">
+              <button class="nav-link fs-5 active" id="openButton" data-bs-toggle="pill"
+                data-target="open">自然步道最新動態</button>
+            </li>
+            <li class="nav-item mx-2">
+              <button class="nav-link fs-5" id="basicButton" data-bs-toggle="pill" data-target="basic">全台自然步道資訊</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link fs-5" id="allButton" data-bs-toggle="pill" data-target="all">各地休閒步道</button>
+            </li>
+          </ul>
+        </div>
+        <div class="contentTable">
+          <div id="open" class="tableDiv" data-name="open">
+            <table id="forestOpenTable"
+              class="table table-striped table-warning table-sm table-hover dataTable text-center">
+              <thead class="table-success">
+                <th width="">發布日期</th>
+                <th width="60px">單位</th>
+                <th width="60px">步道名稱</th>
+                <th width="250px">內容</th>
+                <th width="50px">目前狀態</th>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div id="basic" class="tableDiv" data-name="basic">
+            <table id="forestBasicTable"
+              class="table table-striped table-warning table-sm table-hover dataTable text-center">
+              <thead class="">
+                <th width="100px">位置</th>
+                <th width="100px">步道名稱</th>
+                <th width="50px">總長</th>
+                <th width="50px">海拔高度</th>
+                <th width="120px">路面</th>
+                <th width="50px">最佳季節</th>
+                <th width="40px">時間</th>
+                <th width="60px">附註</th>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div id="all" class="tableDiv" data-name="all">
+            <table id="walkTable" class="table table-striped table-warning table-sm table-hover dataTable text-center">
+              <thead class="table-success">
+                <th width="35px">位置</th>
+                <th width="40px">步道名稱</th>
+                <th width="250px">介紹</th>
+                <th width="10px">海拔高度</th>
+                <th width="10px">時間</th>
+                <th width="80px">交通方式</th>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
       </div>
-      <div>
-        <div id="open" class="tableDiv"  data-name="tab1">
-          <table id="forestOpenTable" class="table table-striped table-warning table-sm table-hover dataTable">
-            <thead class="table-dark">
-              <th width="">發布日期</th>
-              <th width="60px">單位</th>
-              <th width="60px">步道名稱</th>
-              <th width="250px">內容</th>
-              <th width="50px">目前狀態</th>
-            </thead>
-            <tbody></tbody>
-          </table>
+      <div id="weatherContent">
+        <div class="information my-3">
+          <ul class="nav nav-pills nav-justified">
+            <li class="nav-item">
+              <button class="nav-link fs-5 active" id="forecastButton" data-bs-toggle="pill"
+                data-target="forecast">36小時天氣預報</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link fs-5" id="temperatureButton" data-bs-toggle="pill"
+                data-target="temperature">氣溫預報</button>
+            </li>
+          </ul>
         </div>
-        <div id="basic" class="tableDiv"  data-name="tab2">
-          <table id="forestBasicTable" class="table table-striped table-warning table-sm table-hover dataTable">
-            <thead class="table-dark">
-              <th width="100px">位置</th>
-              <th width="100px">步道名稱</th>
-              <th width="50px">總長</th>
-              <th width="50px">海拔高度</th>
-              <th width="120px">路面</th>
-              <th width="50px">最佳季節</th>
-              <th width="40px">時間</th>
-              <th width="60px">附註</th>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-        <div id="all" class="tableDiv"  data-name="tab3">
-          <table id="walkTable" class="table table-striped table-warning table-sm table-hover dataTable">
-            <thead class="table-dark">
-              <th width="30px">位置</th>
-              <th width="40px">步道名稱</th>
-              <th width="250px">介紹</th>
-              <th width="10px">海拔高度</th>
-              <th width="10px">時間</th>
-              <th width="80px">交通方式</th>
-            </thead>
-            <tbody></tbody>
-          </table>
+        <div class="contentTable">
+          <div id="forecast" class="tableDiv" data-name="forecast">
+            <h1 class="text-center">36小時天氣預報</h1>
+            <table id="forecastTable"
+              class="table table-striped align-middle table-info table-sm table-hover text-center dataTable">
+              <thead class="table-primary">
+                <th>城市</th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div id="temperature" class="tableDiv" data-name="temperature">
+            <h1 class="text-center">一週北部地區 - 最高溫度</h1>
+            <canvas id="dayChart" width="320" height="70"></canvas>
+            <h1 class="text-center">一週北部地區 - 最低溫度</h1>
+            <canvas id="nightChart" width="320" height="70"
+              style="background:rgba(119, 136, 153, 0.2);color:white"></canvas>
+          </div>
         </div>
       </div>
     </section>
   </div>
-  <footer>
-    <div class="text-center bg-secondary text-white">以上資料取自政府資料開放平台</div>
+  <footer class="text-center bg-secondary text-white p-1 mt-4">Copyright ©2021 Roger Lo . All rights
+    reserved.<br>以上資料取自政府資料開放平台、中央氣象局開放資料平台
   </footer>
   <script>
     //快速搜尋區
@@ -244,9 +314,10 @@
 
         //nav-button 頁籤切換
         $("#open").show();
-        $('.nav-item button').click(function(){
+        $("#forecast").show();
+        $('.nav-item button').click(function () {
           $(".tableDiv").hide();
-          $('.tableDiv[data-name="'+$(this).attr('data-target')+'"]').show();
+          $('.tableDiv[data-name="' + $(this).attr('data-target') + '"]').show();
           tables.search('').draw();
         })
 
@@ -268,7 +339,250 @@
         //   $("#all").show();
         //   tables.search('').draw();
         // })
+        // ---------------------------------------------------------------------------
+        //氣象切換
+
+        $("#img2").click(function () {
+          $(".tableDiv").hide();
+          $("#trailContent").hide();
+          $("#weatherContent").show();
+          $("#forecast").show();
+          $("#forecastButton").click();
+        })
+        $("#img1").click(function () {
+          $(".tableDiv").hide();
+          $("#weatherContent").hide();
+          $("#trailContent").show();
+          $("#open").show();
+          $("#openButton").click();
+
+        })
       });
+
+    // forecast table
+    let data;
+    $.getJSON('https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-C0032-001?Authorization=CWB-77F7EF76-6578-458C-ACDF-72ABF4BE7727&downloadType=WEB&format=JSON').done(function (re) {
+      // re => data => DOM write => HTML
+      data = re.cwbopendata.dataset.location;
+      console.log(data);
+      //標題
+      const hurTxt = new Array();
+      hurTxt[0] = "凌晨"; //n
+      hurTxt[6] = "白天"; //d
+      hurTxt[12] = "下午"; //d
+      hurTxt[18] = "晚上"; //n
+      // console.log(hurTxt);
+
+      const
+        time0 = moment(new Date(data[21].weatherElement[0].time[0].startTime)),
+        time1 = moment(new Date(data[21].weatherElement[0].time[1].startTime)),
+        time2 = moment(new Date(data[21].weatherElement[0].time[2].startTime)),
+        
+        timeTxt0 = `${time0.format("ll")} ${hurTxt[time0.hour()]}`,
+        timeTxt1 = `${time1.format("ll")} ${hurTxt[time1.hour()]}`,
+        timeTxt2 = `${time2.format("ll")} ${hurTxt[time2.hour()]}`;
+        // console.log(time0);
+        
+        // th文字嵌入
+      $("#forecastTable tr>th").eq(1).text(timeTxt0);
+      $("#forecastTable tr>th").eq(2).text(timeTxt1);
+      $("#forecastTable tr>th").eq(3).text(timeTxt2);
+
+        //白天夜晚icon判斷
+      const
+        iconTxt0 = (time0.hours() == 6 || time0.hours() == 12) ? "day" : "night",
+        iconTxt1 = (time1.hours() == 6 || time1.hours() == 12) ? "day" : "night",
+        iconTxt2 = (time2.hours() == 6 || time2.hours() == 12) ? "day" : "night";
+
+
+
+      // 22個城市
+      for (let i = 0; i < data.length; i++) {
+        const row = data[i];
+        $("#forecastTable tbody").append(`
+        <tr>
+          <td>${row.locationName}</td>
+          <td>
+            <img src="img/${iconTxt0}/${row.weatherElement[0].time[0].parameter.parameterValue}.svg" style="float:left;width:3rem">
+            ${row.weatherElement[0].time[0].parameter.parameterName} <br>
+            溫度 ${row.weatherElement[2].time[0].parameter.parameterName} ~ ${row.weatherElement[1].time[0].parameter.parameterName} ℃
+          </td>
+          <td>
+            <img src="img/${iconTxt1}/${row.weatherElement[0].time[1].parameter.parameterValue}.svg" style="float:left;width:3rem;">
+            ${row.weatherElement[0].time[1].parameter.parameterName}<br>
+            溫度 ${row.weatherElement[2].time[1].parameter.parameterName} ~ ${row.weatherElement[1].time[1].parameter.parameterName} ℃
+          </td>
+          <td>
+            <img src="img/${iconTxt2}/${row.weatherElement[0].time[2].parameter.parameterValue}.svg" style="float:left;width:3rem;">
+            ${row.weatherElement[0].time[2].parameter.parameterName}<br>
+            溫度 ${row.weatherElement[2].time[2].parameter.parameterName} ~ ${row.weatherElement[1].time[2].parameter.parameterName} ℃
+          </td>
+        
+        </tr>
+      `);
+      }
+    }).fail(function (re) {
+      console.log("api error!", re);
+    });
+
+    // terperature table
+    var dayprint = $('#dayChart');
+    var nightprint = $('#nightChart');
+    let tp, nt, tu, kl;
+    const
+      xLabel = new Array(),
+      tpTH = new Array(),
+      ntTH = new Array(),
+      tuTH = new Array(),
+      klTH = new Array(),
+      tpTL = new Array(),
+      ntTL = new Array(),
+      tuTL = new Array(),
+      klTL = new Array();
+
+    $.getJSON('https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-C0032-005?Authorization=CWB-77F7EF76-6578-458C-ACDF-72ABF4BE7727&downloadType=WEB&format=JSON')
+      .done(function (re) {
+        tp = re.cwbopendata.dataset.location[0];
+        nt = re.cwbopendata.dataset.location[1];
+        tu = re.cwbopendata.dataset.location[2];
+        kl = re.cwbopendata.dataset.location[6];
+
+        for (const item of tp.weatherElement[0].time) {
+          xLabel.push(item.startTime.substring(5, 13)); //14個時間做為X軸標題
+        }
+        for (const item of tp.weatherElement[1].time) {
+          tpTH.push(item.parameter.parameterName); //tp 14個時間之最高溫度
+        }
+        for (const item of nt.weatherElement[1].time) {
+          ntTH.push(item.parameter.parameterName); //nt 14個時間之最高溫度
+        }
+        for (const item of tu.weatherElement[1].time) {
+          tuTH.push(item.parameter.parameterName); //tu 14個時間之最高溫度
+        }
+        for (const item of kl.weatherElement[1].time) {
+          klTH.push(item.parameter.parameterName); //kl 14個時間之最高溫度
+        }
+        for (const item of tp.weatherElement[2].time) {
+          tpTL.push(item.parameter.parameterName); //tp 14個時間之最低溫度
+        }
+        for (const item of nt.weatherElement[2].time) {
+          ntTL.push(item.parameter.parameterName); //nt 14個時間之最低溫度
+        }
+        for (const item of tu.weatherElement[2].time) {
+          tuTL.push(item.parameter.parameterName); //tu 14個時間之最低溫度
+        }
+        for (const item of kl.weatherElement[2].time) {
+          klTL.push(item.parameter.parameterName); //kl 14個時間之最低溫度
+        }
+
+
+        var myChart = new Chart(dayprint, {
+          type: 'line',
+          data: {
+            labels: xLabel, // X軸標題
+            datasets: [{
+              label: tp.locationName,
+              data: tpTH,
+              borderColor: 'rgba(255, 99, 132, 1)',
+              backgroundColor: 'rgba(255, 99, 132, 0.1)',
+              tension: 0.3,
+              fill: true,
+              borderDash: [5, 5],
+            },
+            {
+              label: nt.locationName,
+              data: ntTH,
+              borderColor: 'rgba(54, 162, 235, 1)',
+              backgroundColor: 'rgba(54, 162, 235, 0.1)',
+              tension: 0.3,
+              fill: true,
+              borderDash: [5, 5],
+            },
+            {
+              label: tu.locationName,
+              data: tuTH,
+              borderColor: 'rgba(255, 206, 86, 1)',
+              backgroundColor: 'rgba(255, 206, 86, 0.1)',
+              tension: 0.3,
+              fill: true,
+              borderDash: [5, 5],
+            },
+            {
+              label: kl.locationName,
+              data: klTH,
+              borderColor: 'rgba(75, 192, 192, 1)',
+              backgroundColor: 'rgba(75, 192, 192, 0.1)',
+              tension: 0.3,
+              fill: true,
+              borderDash: [5, 5],
+            },
+            ]
+          },
+          options: {
+            scales: {
+              y: {
+                // beginAtZero: true
+                ticks: { stepSize: 0.5 },
+                grace: 1
+
+              }
+            }
+          }
+        });
+        var myChart = new Chart(nightprint, {
+          type: 'line',
+          data: {
+            labels: xLabel, // X軸標題
+            datasets: [{
+              label: tp.locationName,
+              data: tpTL,
+              borderColor: 'rgba(255, 99, 132, 1)',
+              backgroundColor: 'rgba(255, 99, 132, 0.1)',
+              tension: 0.3,
+              fill: true,
+              borderDash: [5, 5],
+            },
+            {
+              label: nt.locationName,
+              data: ntTL,
+              borderColor: 'rgba(54, 162, 235, 1)',
+              backgroundColor: 'rgba(54, 162, 235, 0.1)',
+              tension: 0.3,
+              fill: true,
+              borderDash: [5, 5],
+            },
+            {
+              label: tu.locationName,
+              data: tuTL,
+              borderColor: 'rgba(255, 206, 86, 1)',
+              backgroundColor: 'rgba(255, 206, 86, 0.1)',
+              tension: 0.3,
+              fill: true,
+              borderDash: [5, 5],
+            },
+            {
+              label: kl.locationName,
+              data: klTL,
+              borderColor: 'rgba(75, 192, 192, 1)',
+              backgroundColor: 'rgba(75, 192, 192, 0.1)',
+              tension: 0.3,
+              fill: true,
+              borderDash: [5, 5],
+            },
+            ]
+          },
+          options: {
+            scales: {
+              y: {
+                // beginAtZero: true
+                ticks: { stepSize: 0.5 },
+                grace: 1
+              }
+            }
+          }
+        });
+      });
+
   </script>
 </body>
 
