@@ -1,35 +1,36 @@
 body {
   overflow-x: hidden;
-  background:#fafafa !important;
 }
 
 .img{
-  background: url('img/hiking.jpg') no-repeat;
+  background: url('img/hiking_300x250.jpg') no-repeat;
   height: 250px;
   background-size: contain;
 }
 
-#weatherContent .nav-link {
-  background-color: #eeeeee !important;
-  color: black !important;
+#rightSection{
+  height: 100vh;
 }
 
-#weatherContent .nav-item button:hover {
-  border: 3px solid blue;
+@media (max-width: 992px) {
+  .img{
+    background: url('img/greenTrail_960x250.jpg') no-repeat;
+    object-fit: cover;
+  }
+  #rightSection{
+    height: auto;
+  }
 }
 
-#weatherContent .nav-link.active {
-  background-color: blue !important;
-  color: white !important;
+#rightSection{
+  background-color: aliceblue;
 }
+
 
 .tableDiv {
   display: none;
 }
 
-#weatherContent {
-  display: none;
-}
 
 tbody tr div {
   height: 50px;
@@ -52,7 +53,7 @@ footer {
   z-index: 1030;
 }
 
-@media (max-width: 1285px) {
+@media (max-width: 1475px) {
   footer {
     position: initial;
     margin-top: 30px;

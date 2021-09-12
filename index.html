@@ -50,7 +50,7 @@
 
 <body class="vh-100">
   <div class="row gx-0">
-    <section class="col-12 col-md-2 text-center px-2">
+    <section class="col-12 col-lg-2 text-center px-2">
       <h1 class="text-success fw-bold mt-2"><span>步道哪裡走<img src="img/walking.png" style="width:30px;height:30px"></span>
       </h1>
       <div class="img"></div>
@@ -60,9 +60,9 @@
             步道資訊
           </button>
           <ul class="dropdown-menu w-100">
-            <li><button class="btn btn-primary w-100" id="openButton" data-target="open">自然步道最新動態</button></li>
-            <li><button class="btn btn-primary w-100" id="basicButton" data-target="basic">全台自然步道資訊</button></li>
-            <li><button class="btn btn-primary w-100" id="allButton" data-target="all">各地休閒步道</button></li>
+            <li><a href="#" class="dropdown-item text-center" id="openButton" data-target="open">自然步道最新動態</a></li>
+            <li><a href="#" class="dropdown-item text-center" id="basicButton" data-target="basic">全台自然步道資訊</a></li>
+            <li><a href="#" class="dropdown-item text-center" id="allButton" data-target="all">各地休閒步道</a></li>
           </ul>
         </div>
         <div class="dropdown mt-2">
@@ -70,16 +70,16 @@
             天氣預報
           </button>
           <ul class="dropdown-menu w-100">
-            <li><button class="btn btn-primary w-100" id="forecastButton" data-target="forecast">36小時天氣預報</button></li>
-            <li><button class="btn btn-primary w-100" id="temperatureButton" data-target="temperature">氣溫預報</button></li>
+            <li><a href="#" class="dropdown-item text-center" id="forecastButton" data-target="forecast">36小時天氣預報</a></li>
+            <li><a href="#" class="dropdown-item text-center" id="temperatureButton" data-target="temperature">氣溫預報</a></li>
           </ul>
         </div>
       </div>
-      <div class="cityButton mt-3">
+      <div class="cityButton my-3">
         <div class="key fs-3 my-2">關鍵字快速搜尋</div>
       </div>
     </section>
-    <section class="col-12 col-md-10 px-2">
+    <section class="col-12 col-lg-10 px-2" id="rightSection">
       <div id="trailContent">
         <div class="contentTable mt-4">
           <div id="open" class="tableDiv" data-name="open">

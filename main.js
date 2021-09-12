@@ -92,8 +92,7 @@ $.when(
 
     //nav-button 頁籤切換
     $("#open").show();
-    $("#forecast").show();
-    $('.dropdown-menu button').click(function () {
+    $('.dropdown-menu a').click(function () {
       $(".tableDiv").hide();
       $('.tableDiv[data-name="' + $(this).attr('data-target') + '"]').show();
       tables.search('').draw();
@@ -119,26 +118,9 @@ $.when(
     //   tables.search('').draw();
     // })
     // ---------------------------------------------------------------------------
-
-    //氣象切換
-
-    $("#dropdownMenu2").click(function () {
-      $(".tableDiv").hide();
-      $("#trailContent").hide();
-      $("#weatherContent").show();
-      $("#forecast").show();
-      $("#forecastButton").click();
-    })
-    $("#dropdownMenu").click(function () {
-      $(".tableDiv").hide();
-      $("#weatherContent").hide();
-      $("#trailContent").show();
-      $("#open").show();
-      $("#openButton").click();
-
-    })
   });
-
+  
+  
 // forecast table
 let data;
 $.getJSON('https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-C0032-001?Authorization=CWB-77F7EF76-6578-458C-ACDF-72ABF4BE7727&downloadType=WEB&format=JSON').done(function (re) {
