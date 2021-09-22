@@ -3,9 +3,9 @@ body {
 }
 
 .img{
-  background: url('img/hiking_300x250.jpg') no-repeat;
+  background: url('img/hiking_300x250.jpg') no-repeat center center;
   height: 250px;
-  background-size: contain;
+  background-size: cover;
 }
 
 #rightSection{
@@ -14,7 +14,7 @@ body {
 
 @media (max-width: 992px) {
   .img{
-    background: url('img/greenTrail_960x250.jpg') no-repeat;
+    background: url('img/greenTrail_960x250.jpg') no-repeat center center;
     object-fit: cover;
   }
   #rightSection{

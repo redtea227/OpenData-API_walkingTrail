@@ -98,34 +98,13 @@ $.when(
       tables.search('').draw();
       tableOpen.search('').draw();
     })
-
-    // $("#openButton").click(function () {
-    //   $("#open").show();
-    //   $("#basic").hide();
-    //   $("#all").hide();
-    //   tables.search('').draw();
-    // })
-    // $("#basicButton").click(function () {
-    //   $("#open").hide();
-    //   $("#basic").show();
-    //   $("#all").hide();
-    //   tables.search('').draw();
-    // })
-    // $("#allButton").click(function () {
-    //   $("#open").hide();
-    //   $("#basic").hide();
-    //   $("#all").show();
-    //   tables.search('').draw();
-    // })
-    // ---------------------------------------------------------------------------
   });
   
   
 // forecast table
-let data;
 $.getJSON('https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-C0032-001?Authorization=CWB-77F7EF76-6578-458C-ACDF-72ABF4BE7727&downloadType=WEB&format=JSON').done(function (re) {
   // re => data => DOM write => HTML
-  data = re.cwbopendata.dataset.location;
+  let data = re.cwbopendata.dataset.location;
   // console.log(data);
   //標題
   const hurTxt = new Array();
